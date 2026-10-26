@@ -11,7 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Fixed the social post composer layout so attached position cards sit closer to the text field (#38130)
 - Updated the social post composer so the position card sits closer to the text field ([#38130](https://github.com/MetaMask/metamask-mobile/pull/38130))
+
+### Changed
+
+- Fixed the linked social account note so the info icon aligns with the first line (#38147)
+- Fixed the social post composer character count color to match the placeholder (#38137)
 
 ## [8.17.0]
 
