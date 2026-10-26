@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated the social post composer so the position card sits closer to the text field (#38130)
 
+### Changed
+
+- Updated the linked social account note so the info icon aligned with the first line (#38147)
+- Updated the social post composer character count to use the alternative text color (#38137)
+
 ## [8.17.0]
 
 ### Added
