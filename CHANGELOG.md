@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [98.0.1]
+
+### Fixed
+
+- Fixed the linked social account note so the info icon aligns with the first line (#38147)
+- Fixed the social post composer character count color to match the placeholder (#38137)
+- Fixed the social post composer layout so attached position cards sit closer to the text field (#38130)
+
+## [98.0.0]
+
+### Added
+
+- Added fixture predecessor entry for 98.0.0 (#1)
+
 ## [8.17.0]
 
 ### Added
@@ -14611,7 +14625,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#957](https://github.com/MetaMask/metamask-mobile/pull/957): fix timeouts (#957)
 - [#954](https://github.com/MetaMask/metamask-mobile/pull/954): Bugfix: onboarding navigation (#954)
 
-[Unreleased]: https://github.com/MetaMask/metamask-mobile/compare/v8.17.0...HEAD
+[Unreleased]: https://github.com/MetaMask/metamask-mobile/compare/v98.0.1...HEAD
+[98.0.1]: https://github.com/MetaMask/metamask-mobile/compare/v98.0.0...v98.0.1
+[98.0.0]: https://github.com/MetaMask/metamask-mobile/compare/v8.17.0...v98.0.0
 [8.17.0]: https://github.com/MetaMask/metamask-mobile/compare/v8.16.1...v8.17.0
 [8.16.1]: https://github.com/MetaMask/metamask-mobile/compare/v8.16.0...v8.16.1
 [8.16.0]: https://github.com/MetaMask/metamask-mobile/compare/v8.15.1...v8.16.0
