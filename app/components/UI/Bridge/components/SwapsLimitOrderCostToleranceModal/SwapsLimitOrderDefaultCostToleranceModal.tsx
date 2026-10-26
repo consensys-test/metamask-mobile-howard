@@ -18,7 +18,7 @@ import {
   selectLimitOrderCostTolerance,
   setLimitOrderCostTolerance,
 } from '../../../../../core/redux/slices/bridge';
-import { selectBridgeLimitOrderDefaultCostTolerance } from '../../../../../selectors/bridge/featureFlags';
+import { LIMIT_ORDER_DEFAULT_COST_TOLERANCE } from '../../constants/limitOrders';
 import { CostToleranceButtonGroup } from './CostToleranceButtonGroup';
 import {
   COST_TOLERANCE_OPTIONS,
@@ -32,11 +32,8 @@ export const SwapsLimitOrderDefaultCostToleranceModal = () => {
   const navigation = useNavigation<AppNavigationProp>();
   const dispatch = useDispatch();
   const costTolerance = useSelector(selectLimitOrderCostTolerance);
-  const defaultCostTolerance = useSelector(
-    selectBridgeLimitOrderDefaultCostTolerance,
-  );
   const [selectedCostTolerance, setSelectedCostTolerance] = useState(
-    costTolerance ?? defaultCostTolerance,
+    costTolerance ?? LIMIT_ORDER_DEFAULT_COST_TOLERANCE,
   );
 
   const handleClose = useCallback(() => {

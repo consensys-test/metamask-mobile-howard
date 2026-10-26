@@ -1,7 +1,6 @@
 import {
   array,
   boolean,
-  enums,
   number,
   optional,
   record,
@@ -35,8 +34,8 @@ export type SignedLimitOrderDelegation = Infer<
  * side narrows them (see `LimitOrderTriggerKind`).
  */
 export const LimitOrderTriggerSchema = type({
-  kind: enums(['src_price', 'dest_price', 'ratio']),
-  threshold: enums(['above', 'below']),
+  kind: string(),
+  threshold: string(),
   price: string(),
 });
 

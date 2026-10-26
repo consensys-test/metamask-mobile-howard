@@ -1,57 +1,22 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
-import { MembershipVipBadgeSelectorsIDs } from '../../../shared/MembershipVipBadge/MembershipVipBadge';
 import PerpsFeesDisplay from './PerpsFeesDisplay';
 
 jest.mock('../../../shared/MembershipVipBadge/MembershipVipBadge', () => {
-  const actual = jest.requireActual<
-    typeof import('../../../shared/MembershipVipBadge/MembershipVipBadge')
-  >('../../../shared/MembershipVipBadge/MembershipVipBadge');
   const MockReact = jest.requireActual('react');
   const { View } = jest.requireActual('react-native');
-
   return {
-    ...actual,
     __esModule: true,
     default: ({ hasProEntitlement }: { hasProEntitlement?: boolean }) =>
       MockReact.createElement(View, {
         testID: hasProEntitlement
-          ? actual.MembershipVipBadgeSelectorsIDs.MEMBER_BADGE
-          : actual.MembershipVipBadgeSelectorsIDs.VIP_BADGE,
+          ? 'rewards-member-badge'
+          : 'rewards-vip-badge',
       }),
   };
 });
 
 describe('PerpsFeesDisplay', () => {
-  it('shows a promotional label and original fee without a VIP badge', () => {
-    const { getByText, getByTestId, queryByTestId } = render(
-      <PerpsFeesDisplay
-        fee={0}
-        originalFee={10}
-        feeDiscountPercentage={100}
-        feeDiscountKind="promotional"
-        testID="fee"
-      />,
-    );
-
-    expect(getByText('Promotional discount')).toBeOnTheScreen();
-    expect(getByTestId('fee-original')).toBeOnTheScreen();
-    expect(
-      queryByTestId(MembershipVipBadgeSelectorsIDs.VIP_BADGE),
-    ).not.toBeOnTheScreen();
-  });
-
-  it('uses a generic label when attribution is unknown', () => {
-    const { getByText, queryByTestId } = render(
-      <PerpsFeesDisplay fee={5} originalFee={10} feeDiscountPercentage={50} />,
-    );
-
-    expect(getByText('Fee discount')).toBeOnTheScreen();
-    expect(
-      queryByTestId(MembershipVipBadgeSelectorsIDs.VIP_BADGE),
-    ).not.toBeOnTheScreen();
-  });
-
   describe('Discount visibility', () => {
     it('does not show discounted fee when feeDiscountPercentage is undefined', () => {
       const { queryByTestId, getByTestId } = render(
@@ -81,7 +46,6 @@ describe('PerpsFeesDisplay', () => {
       const { queryByTestId } = render(
         <PerpsFeesDisplay
           fee={10}
-          feeDiscountKind="vip"
           feeDiscountPercentage={-5}
           originalFee={12}
           testID="fee"
@@ -117,7 +81,6 @@ describe('PerpsFeesDisplay', () => {
       const { getByTestId } = render(
         <PerpsFeesDisplay
           fee={8.5}
-          feeDiscountKind="vip"
           feeDiscountPercentage={15}
           originalFee={10}
           testID="fee"
@@ -160,11 +123,10 @@ describe('PerpsFeesDisplay', () => {
       expect(queryByTestId('rewards-vip-badge')).toBeNull();
     });
 
-    it('renders the VIP badge for a verified VIP discount', () => {
+    it('renders the VIP badge when a discount is active', () => {
       const { getByTestId } = render(
         <PerpsFeesDisplay
           fee={10}
-          feeDiscountKind="vip"
           feeDiscountPercentage={10}
           originalFee={12}
         />,
@@ -177,7 +139,6 @@ describe('PerpsFeesDisplay', () => {
       const { getByTestId } = render(
         <PerpsFeesDisplay
           fee={8.5}
-          feeDiscountKind="vip"
           feeDiscountPercentage={15}
           originalFee={10}
           testID="fee"
@@ -190,14 +151,14 @@ describe('PerpsFeesDisplay', () => {
     });
   });
 
-  describe('Fee discount presentation', () => {
-    it('renders the member badge (not VIP) for a member discount', () => {
+  describe('Fee source badge selection', () => {
+    it('renders the member badge (not VIP) when feeSource is subscription', () => {
       const { getByTestId, queryByTestId } = render(
         <PerpsFeesDisplay
           fee={8.5}
           originalFee={10}
           feeDiscountPercentage={15}
-          feeDiscountKind="member"
+          feeSource="subscription"
         />,
       );
 
@@ -210,7 +171,7 @@ describe('PerpsFeesDisplay', () => {
         <PerpsFeesDisplay
           fee={8.5}
           originalFee={10}
-          feeDiscountKind="member"
+          feeSource="subscription"
           testID="fee"
         />,
       );
@@ -220,13 +181,13 @@ describe('PerpsFeesDisplay', () => {
       expect(queryByTestId('fee-original')).toBeNull();
     });
 
-    it('renders the VIP badge for a VIP discount', () => {
+    it('renders the VIP badge when feeSource is rewards and a discount applies', () => {
       const { getByTestId, queryByTestId } = render(
         <PerpsFeesDisplay
           fee={8.5}
           originalFee={10}
           feeDiscountPercentage={15}
-          feeDiscountKind="vip"
+          feeSource="rewards"
         />,
       );
 
@@ -234,23 +195,22 @@ describe('PerpsFeesDisplay', () => {
       expect(queryByTestId('rewards-member-badge')).toBeNull();
     });
 
-    it('renders generic discount copy without a badge', () => {
-      const { getByText, queryByTestId } = render(
+    it('renders the VIP badge (not member) when feeSource is default and a discount is present', () => {
+      const { getByTestId, queryByTestId } = render(
         <PerpsFeesDisplay
           fee={8.5}
           originalFee={10}
           feeDiscountPercentage={15}
-          feeDiscountKind="generic"
+          feeSource="default"
         />,
       );
 
       expect(queryByTestId('rewards-member-badge')).toBeNull();
-      expect(queryByTestId('rewards-vip-badge')).toBeNull();
-      expect(getByText('Fee discount')).toBeTruthy();
+      expect(getByTestId('rewards-vip-badge')).toBeTruthy();
     });
 
-    it('falls back to generic discount copy when the kind is omitted', () => {
-      const { getByText, queryByTestId } = render(
+    it('falls back to discount-based VIP badge when feeSource is omitted', () => {
+      const { getByTestId, queryByTestId } = render(
         <PerpsFeesDisplay
           fee={8.5}
           originalFee={10}
@@ -258,9 +218,8 @@ describe('PerpsFeesDisplay', () => {
         />,
       );
 
-      expect(queryByTestId('rewards-vip-badge')).toBeNull();
+      expect(getByTestId('rewards-vip-badge')).toBeTruthy();
       expect(queryByTestId('rewards-member-badge')).toBeNull();
-      expect(getByText('Fee discount')).toBeTruthy();
     });
   });
 });

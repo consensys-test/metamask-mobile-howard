@@ -1,7 +1,4 @@
-import {
-  FeatureId,
-  type MetaMetricsSwapsEventSource,
-} from '@metamask/bridge-controller';
+import type { MetaMetricsSwapsEventSource } from '@metamask/bridge-controller';
 import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useAnalytics } from '../../../../hooks/useAnalytics/useAnalytics';
@@ -14,7 +11,6 @@ import {
   selectDestToken,
   selectSourceToken,
 } from '../../../../../core/redux/slices/bridge';
-import { useSwapsFeatureId } from '../useSwapsFeatureId';
 
 export const useTrackSwapPageViewed = (
   location: MetaMetricsSwapsEventSource,
@@ -22,14 +18,14 @@ export const useTrackSwapPageViewed = (
   const { trackEvent, createEventBuilder } = useAnalytics();
   const sourceToken = useSelector(selectSourceToken);
   const destToken = useSelector(selectDestToken);
-  const featureId = useSwapsFeatureId();
-  const lastTrackedFeatureId = useRef<FeatureId | undefined>(undefined);
+
+  const hasTrackedPageView = useRef(false);
 
   useEffect(() => {
-    const shouldTrackPageView =
-      sourceToken && lastTrackedFeatureId.current !== featureId;
+    const shouldTrackPageView = sourceToken && !hasTrackedPageView.current;
 
     if (shouldTrackPageView) {
+      hasTrackedPageView.current = true;
       const pageViewedProperties = {
         chain_id_source: getDecimalChainId(sourceToken.chainId),
         chain_id_destination: getDecimalChainId(destToken?.chainId),
@@ -38,14 +34,9 @@ export const useTrackSwapPageViewed = (
         token_address_source: sourceToken.address,
         token_address_destination: destToken?.address,
         location,
-        feature_id: featureId,
       };
       trackEvent(
-        createEventBuilder(
-          featureId === FeatureId.UNIFIED_SWAP_BRIDGE
-            ? MetaMetricsEvents.SWAP_PAGE_VIEWED
-            : MetaMetricsEvents.ADVANCED_ORDER_PAGE_VIEWED,
-        )
+        createEventBuilder(MetaMetricsEvents.SWAP_PAGE_VIEWED)
           .addProperties(pageViewedProperties)
           .build(),
       );
@@ -56,14 +47,6 @@ export const useTrackSwapPageViewed = (
           )
           .build(),
       );
-      lastTrackedFeatureId.current = featureId;
     }
-  }, [
-    sourceToken,
-    destToken,
-    location,
-    trackEvent,
-    createEventBuilder,
-    featureId,
-  ]);
+  }, [sourceToken, destToken, location, trackEvent, createEventBuilder]);
 };

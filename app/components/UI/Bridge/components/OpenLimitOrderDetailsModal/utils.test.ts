@@ -51,9 +51,9 @@ function createOrder({
   srcAmount: string;
   destAsset: LimitOrderAsset;
   destAmount: string;
-  kind: LimitOrder['trigger']['kind'];
+  kind: string;
   price: string;
-  threshold?: LimitOrder['trigger']['threshold'];
+  threshold?: string;
 }): LimitOrder {
   return {
     ...MOCK_LIMIT_OPEN_ORDER,
@@ -612,7 +612,6 @@ describe('getTriggerPrice', () => {
         destAmount: '220000000',
         kind: 'src_price',
         price: '2200',
-        // @ts-expect-error - this is a test
         threshold: 'crosses',
       });
       const { sourceToken, destinationToken } = getLimitOrderTokens(order);

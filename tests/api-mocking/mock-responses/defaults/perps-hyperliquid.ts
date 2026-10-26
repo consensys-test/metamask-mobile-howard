@@ -14,13 +14,12 @@ export const PERPS_HYPERLIQUID_MOCKS: MockEventsObject = {
       response: [],
     },
     {
-      // Generic E2E fixtures use the deterministic Hyperliquid mocks below.
-      // Force the v4 global snapshot to use that fallback rather than maintaining
-      // a time-sensitive signed snapshot fixture here.
+      // v3 perpetuals (global snapshot) – return a valid empty snapshot so the
+      // controller does not error and withFixtures cleanup does not fail.
       urlEndpoint:
-        /^https:\/\/terminal\.(dev-api|uat-api|api)\.cx\.metamask\.io\/v4\/perpetuals/,
-      responseCode: 503,
-      response: {},
+        /^https:\/\/terminal\.(dev-api|uat-api|api)\.cx\.metamask\.io\/v3\/perpetuals/,
+      responseCode: 200,
+      response: { schemaVersion: 3, markets: [] },
     },
     {
       // Perps Home / Market Details fetch this on mount. Hide the banner so

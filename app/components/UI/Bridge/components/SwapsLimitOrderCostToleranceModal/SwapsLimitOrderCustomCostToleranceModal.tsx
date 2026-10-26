@@ -23,7 +23,7 @@ import {
   setLimitOrderCostTolerance,
 } from '../../../../../core/redux/slices/bridge';
 import Keypad from '../../../../Base/Keypad';
-import { selectBridgeLimitOrderDefaultCostTolerance } from '../../../../../selectors/bridge/featureFlags';
+import { LIMIT_ORDER_DEFAULT_COST_TOLERANCE } from '../../constants/limitOrders';
 import { InputStepper } from '../InputStepper';
 import {
   COST_TOLERANCE_MAX,
@@ -39,11 +39,8 @@ export const SwapsLimitOrderCustomCostToleranceModal = () => {
   const { goBack } = useNavigation<AppNavigationProp>();
   const dispatch = useDispatch();
   const costTolerance = useSelector(selectLimitOrderCostTolerance);
-  const defaultCostTolerance = useSelector(
-    selectBridgeLimitOrderDefaultCostTolerance,
-  );
   const [inputAmount, setInputAmount] = useState(
-    costTolerance ?? defaultCostTolerance,
+    costTolerance ?? LIMIT_ORDER_DEFAULT_COST_TOLERANCE,
   );
   const [hasAttemptedToExceedMax, setHasAttemptedToExceedMax] = useState(false);
   const parsedInputAmount = Number.parseFloat(inputAmount);

@@ -4,7 +4,6 @@ import { analytics } from '../../../../util/analytics/analytics';
 import Logger from '../../../../util/Logger';
 import { DevLogger } from '../../../../core/SDKConnect/utils/DevLogger';
 import {
-  BUILDER_FEE_CONFIG,
   PerpsMeasurementName,
   PerpsTraceNames,
   type PerpsAnalyticsEvent,
@@ -107,12 +106,6 @@ jest.mock('../../../../core/Engine', () => ({
   context: {
     RewardsController: {
       getPerpsDiscountForAccount: jest.fn().mockResolvedValue(5),
-      getPerpsTradingFeeGrant: jest.fn().mockResolvedValue({
-        providerId: 'hyperliquid',
-        isTestnet: false,
-        feeBips: 2.5,
-        expiresAt: 1_800_000_000_000,
-      }),
     },
   },
 }));
@@ -439,7 +432,7 @@ describe('createMobileInfrastructure', () => {
       expect(result).toBe(5);
     });
 
-    it('leaves VIP eligibility to RewardsController', async () => {
+    it('returns 0 discount when vipProgramEnabled is false', async () => {
       mockSelectVipProgramEnabled.mockReturnValue(false);
       const infra = createMobileInfrastructure();
       const caipAccountId =
@@ -452,27 +445,8 @@ describe('createMobileInfrastructure', () => {
 
       expect(
         Engine.context.RewardsController.getPerpsDiscountForAccount,
-      ).toHaveBeenCalledWith(caipAccountId, 10);
-      expect(result).toBe(5);
-    });
-
-    it('delegates a route-aware grant independently of VIP eligibility', async () => {
-      mockSelectVipProgramEnabled.mockReturnValue(false);
-      const infra = createMobileInfrastructure();
-      const scope = { providerId: 'hyperliquid', isTestnet: false };
-
-      const result = await infra.rewards.getPerpsTradingFeeGrant?.(scope);
-
-      expect(
-        Engine.context.RewardsController.getPerpsTradingFeeGrant,
-      ).toHaveBeenCalledWith(scope);
-      expect(result).toEqual(
-        expect.objectContaining({
-          providerId: 'hyperliquid',
-          isTestnet: false,
-          feeBips: 2.5,
-        }),
-      );
+      ).not.toHaveBeenCalled();
+      expect(result).toBe(0);
     });
   });
 
@@ -567,7 +541,7 @@ describe('createMobileClientConfig', () => {
     }
   });
 
-  it('returns default config when no env vars are set', () => {
+  it('returns default config with empty strings and arrays when no env vars are set', () => {
     // Arrange is provided by beforeEach.
 
     // Act
@@ -582,7 +556,7 @@ describe('createMobileClientConfig', () => {
       providerCredentials: {
         hyperliquid: {
           builderAddressTestnet: '',
-          builderAddressMainnet: BUILDER_FEE_CONFIG.MainnetBuilder,
+          builderAddressMainnet: '',
         },
         lighter: {
           enabled: false,
@@ -832,10 +806,6 @@ describe('createMobileInfrastructure - terminalApi', () => {
     }
   });
 
-  it('uses the schema-v4 global snapshot route required by Core', () => {
-    expect(TERMINAL_API_PATHS.GLOBAL_SNAPSHOT).toBe('/v4/perpetuals');
-  });
-
   it('includes the production market endpoint in one Terminal config', () => {
     process.env.METAMASK_ENVIRONMENT = 'production';
     process.env.METAMASK_BUILD_TYPE = 'main';
@@ -872,16 +842,16 @@ describe('resolveTerminalGlobalSnapshotUrl', () => {
       resolveTerminalGlobalSnapshotUrl({
         isDevBundle: true,
         environment: 'dev',
-        endpoint: '  http://127.0.0.1:9332/v4/perpetuals  ',
+        endpoint: '  http://127.0.0.1:9332/v2/perpetuals/global-snapshot  ',
         host: TERMINAL_API_HOSTS.DEV,
       }),
-    ).toBe('http://127.0.0.1:9332/v4/perpetuals');
+    ).toBe('http://127.0.0.1:9332/v2/perpetuals/global-snapshot');
 
     expect(
       resolveTerminalGlobalSnapshotUrl({
         isDevBundle: true,
         environment: 'production',
-        endpoint: 'http://127.0.0.1:9332/v4/perpetuals',
+        endpoint: 'http://127.0.0.1:9332/v2/perpetuals/global-snapshot',
         host: TERMINAL_API_HOSTS.PRD,
       }),
     ).toBe(`${TERMINAL_API_HOSTS.PRD}${TERMINAL_API_PATHS.GLOBAL_SNAPSHOT}`);
@@ -889,7 +859,7 @@ describe('resolveTerminalGlobalSnapshotUrl', () => {
       resolveTerminalGlobalSnapshotUrl({
         isDevBundle: false,
         environment: 'dev',
-        endpoint: 'http://127.0.0.1:9332/v4/perpetuals',
+        endpoint: 'http://127.0.0.1:9332/v2/perpetuals/global-snapshot',
         host: TERMINAL_API_HOSTS.DEV,
       }),
     ).toBe(`${TERMINAL_API_HOSTS.DEV}${TERMINAL_API_PATHS.GLOBAL_SNAPSHOT}`);

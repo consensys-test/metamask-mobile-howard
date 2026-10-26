@@ -10,7 +10,6 @@ import { MOCK_LIMIT_OPEN_ORDER } from '../../api/limitOrders/getLimitOrders/mock
 import { CancelLimitOrderModalSelectorsIDs } from '../CancelLimitOrderModal/testIds';
 import { TokenAmountValueSelectorsIDs } from '../LimitOrderConfirmationModal/TokenAmountValue/testIds';
 import { OpenLimitOrderDetailsModalSelectorsIDs } from './testIds';
-import type { LimitOrder } from '../../api/limitOrders/getLimitOrders/types';
 
 const {
   SHEET,
@@ -36,7 +35,7 @@ const renderDetails = () =>
 const MOCK_USD_PRICE_ORDER = {
   ...MOCK_LIMIT_OPEN_ORDER,
   trigger: { kind: 'src_price', threshold: 'above', price: '2160' },
-} as const;
+};
 
 /**
  * State where the display currency is EUR. 1 ETH is worth EUR 2000 and
@@ -101,7 +100,7 @@ describeForPlatforms('OpenLimitOrderDetailsModal', () => {
     expect(within(expiryRow).getByText(EXPIRY_DATE)).toBeOnTheScreen();
   });
 
-  it.each<LimitOrder['trigger']['kind']>(['src_price', 'dest_price'])(
+  it.each(['src_price', 'dest_price'])(
     'shows a %s trigger as a USD price',
     async (kind) => {
       const { findByTestId, getByTestId } = renderOpenLimitOrderDetailsModal({

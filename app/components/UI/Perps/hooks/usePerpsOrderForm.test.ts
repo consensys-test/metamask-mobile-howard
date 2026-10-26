@@ -239,7 +239,6 @@ describe('usePerpsOrderForm', () => {
       },
       refetch: jest.fn(),
       isLoading: false,
-      isProviderMetadataAvailable: true,
       error: null,
     });
   });
@@ -1167,7 +1166,6 @@ describe('usePerpsOrderForm', () => {
         },
         refetch: jest.fn(),
         isLoading: false,
-        isProviderMetadataAvailable: true,
         error: null,
       });
 
@@ -1246,7 +1244,6 @@ describe('usePerpsOrderForm', () => {
         },
         refetch: jest.fn(),
         isLoading: false,
-        isProviderMetadataAvailable: true,
         error: null,
       });
 

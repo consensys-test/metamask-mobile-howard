@@ -7,7 +7,6 @@ export const createMockFormatAccountToCaipAccountId = () => jest.fn();
 
 export const createMockRewardsController = () => ({
   getPerpsDiscountForAccount: jest.fn(),
-  getPerpsTradingFeeGrant: jest.fn().mockResolvedValue(null),
 });
 
 export const mockCaipAccountId =

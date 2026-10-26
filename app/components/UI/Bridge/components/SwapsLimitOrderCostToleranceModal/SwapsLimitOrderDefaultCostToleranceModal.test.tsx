@@ -6,7 +6,6 @@ import {
   selectLimitOrderCostTolerance,
   setLimitOrderCostTolerance,
 } from '../../../../../core/redux/slices/bridge';
-import { selectBridgeLimitOrderDefaultCostTolerance } from '../../../../../selectors/bridge/featureFlags';
 import { SwapsLimitOrderDefaultCostToleranceModal } from './SwapsLimitOrderDefaultCostToleranceModal';
 import { SwapsLimitOrderCostToleranceModalSelectorsIDs } from './testIds';
 import { CUSTOM_COST_TOLERANCE_OPTION_ID } from './constants';
@@ -47,19 +46,10 @@ jest.mock('@react-navigation/native', () => ({
 }));
 
 describe('SwapsLimitOrderDefaultCostToleranceModal', () => {
-  const mockCostTolerance = (
-    costTolerance: string | undefined,
-    defaultCostTolerance = '3',
-  ) =>
-    mockSelector.mockImplementation((selector) => {
-      if (selector === selectLimitOrderCostTolerance) {
-        return costTolerance;
-      }
-      if (selector === selectBridgeLimitOrderDefaultCostTolerance) {
-        return defaultCostTolerance;
-      }
-      return undefined;
-    });
+  const mockCostTolerance = (costTolerance: string | undefined) =>
+    mockSelector.mockImplementation((selector) =>
+      selector === selectLimitOrderCostTolerance ? costTolerance : undefined,
+    );
 
   beforeEach(() => {
     mockCostTolerance(undefined);
@@ -78,7 +68,7 @@ describe('SwapsLimitOrderDefaultCostToleranceModal', () => {
     expect(
       getByText(
         strings('bridge.default_cost_tolerance_description', {
-          costTolerance: '3',
+          costTolerance: '2',
         }),
       ),
     ).toBeOnTheScreen();
@@ -129,23 +119,12 @@ describe('SwapsLimitOrderDefaultCostToleranceModal', () => {
     });
   });
 
-  it('preselects the default cost tolerance when no cost tolerance is stored', () => {
+  it('preselects 2% when no cost tolerance is stored', () => {
     const { getByText } = render(<SwapsLimitOrderDefaultCostToleranceModal />);
 
     fireEvent.press(getByText(strings('bridge.submit')));
 
-    expect(mockDispatch).toHaveBeenCalledWith(setLimitOrderCostTolerance('3'));
-  });
-
-  it('preselects the remote default cost tolerance when no cost tolerance is stored', () => {
-    mockCostTolerance(undefined, '0.5');
-    const { getByText } = render(<SwapsLimitOrderDefaultCostToleranceModal />);
-
-    fireEvent.press(getByText(strings('bridge.submit')));
-
-    expect(mockDispatch).toHaveBeenCalledWith(
-      setLimitOrderCostTolerance('0.5'),
-    );
+    expect(mockDispatch).toHaveBeenCalledWith(setLimitOrderCostTolerance('2'));
   });
 
   it('dispatches the selected value when an option is submitted', () => {

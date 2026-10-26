@@ -21,20 +21,11 @@ function getRootMessenger(): RootMessenger {
 }
 
 describe('getRewardsDataServiceMessenger', () => {
-  it('delegates AuthenticationController:getBearerToken', async () => {
+  it('returns a restricted messenger', () => {
     const rootMessenger: RootMessenger = getRootMessenger();
-    rootMessenger.registerActionHandler(
-      'AuthenticationController:getBearerToken',
-      jest.fn().mockResolvedValue('profile-token'),
-    );
     const rewardsDataServiceMessenger =
       getRewardsDataServiceMessenger(rootMessenger);
 
     expect(rewardsDataServiceMessenger).toBeInstanceOf(Messenger);
-    await expect(
-      rewardsDataServiceMessenger.call(
-        'AuthenticationController:getBearerToken',
-      ),
-    ).resolves.toBe('profile-token');
   });
 });

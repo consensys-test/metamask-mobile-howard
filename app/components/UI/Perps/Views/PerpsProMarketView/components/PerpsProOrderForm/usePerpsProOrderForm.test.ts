@@ -272,7 +272,6 @@ jest.mock('../../../../../../../util/Logger', () => ({
 let mockPositionStreamLoading = false;
 let mockMarketDataLoading = false;
 let mockMarketDataError: string | null = null;
-let mockProviderMetadataAvailable = true;
 let mockMarketData: {
   szDecimals: number;
   maxLeverage: number;
@@ -307,7 +306,6 @@ jest.mock('../../../../hooks', () => ({
     return {
       marketData: data ? { ...data, szDecimals: mockSizeDecimals } : data,
       isLoading: mockMarketDataLoading,
-      isProviderMetadataAvailable: mockProviderMetadataAvailable,
       error: mockMarketDataError,
     };
   },
@@ -706,7 +704,6 @@ describe('usePerpsProOrderForm', () => {
     mockPositionStreamLoading = false;
     mockMarketDataLoading = false;
     mockMarketDataError = null;
-    mockProviderMetadataAvailable = true;
     mockMarketData = { szDecimals: 3, maxLeverage: 40 };
     mockMarketDataByProvider = null;
     mockIsPlacing = false;
@@ -3842,18 +3839,6 @@ describe('usePerpsProOrderForm', () => {
       expect(
         result.current.notices.find((n) => n.id === 'sl-liq-risk'),
       ).toBeUndefined();
-    });
-
-    it('keeps Cross unavailable when provider margin metadata is unavailable', () => {
-      mockProviderMetadataAvailable = false;
-
-      const { result } = renderWithCrossMargin();
-
-      act(() => {
-        result.current.onMarginModeSelect('cross');
-      });
-      expect(result.current.isCrossMarginAvailableForMarket).toBe(false);
-      expect(result.current.marginMode).toBe('isolated');
     });
 
     it.each([

@@ -1,5 +1,3 @@
-import PerpsFeeDiscountLabel from '../PerpsFeesDisplay/PerpsFeeDiscountLabel';
-import { type PerpsFeeDiscountKind } from '../../utils/feeDiscount';
 import {
   Box,
   BoxAlignItems,
@@ -23,12 +21,13 @@ import {
   TextColor,
   TextVariant,
 } from '@metamask/design-system-react-native';
-import type { OrderType } from '@metamask/perps-controller';
+import type { OrderType, PerpsFeeSource } from '@metamask/perps-controller';
 import React, { useState } from 'react';
 import { Pressable } from 'react-native';
 import { strings } from '../../../../../../locales/i18n';
 import { ImpactMoment, useHaptics } from '../../../../../util/haptics';
 import Keypad from '../../../../Base/Keypad';
+import MembershipVipBadge from '../../../shared/MembershipVipBadge/MembershipVipBadge';
 import { PerpsTradeSheetSelectorsIDs } from '../../Perps.testIds';
 import PerpsAmountDisplay from '../PerpsAmountDisplay';
 import PerpsMarketLimitToggle from '../PerpsMarketLimitToggle';
@@ -108,7 +107,7 @@ interface PerpsTradeScreenProps {
   /** Formatted fiat bridge fee, shown when the user pays with a token. */
   bridgeFee?: string;
   feeDiscountPercentage?: number;
-  feeDiscountKind?: PerpsFeeDiscountKind;
+  feeSource?: PerpsFeeSource;
   isSubmitting: boolean;
   isSubmitDisabled: boolean;
   submitLabel?: string;
@@ -312,7 +311,7 @@ const PerpsTradeScreen: React.FC<PerpsTradeScreenProps> = ({
   feePercentage,
   bridgeFee,
   feeDiscountPercentage,
-  feeDiscountKind,
+  feeSource,
   isSubmitting,
   isSubmitDisabled,
   submitLabel,
@@ -911,10 +910,11 @@ const PerpsTradeScreen: React.FC<PerpsTradeScreenProps> = ({
                 justifyContent={BoxJustifyContent.Center}
                 gap={2}
               >
-                <PerpsFeeDiscountLabel
-                  feeDiscountPercentage={feeDiscountPercentage}
-                  feeDiscountKind={feeDiscountKind}
-                />
+                {(feeDiscountPercentage ?? 0) > 0 ? (
+                  <MembershipVipBadge
+                    hasProEntitlement={feeSource === 'subscription'}
+                  />
+                ) : null}
                 <Text
                   variant={TextVariant.BodyXs}
                   color={TextColor.TextAlternative}

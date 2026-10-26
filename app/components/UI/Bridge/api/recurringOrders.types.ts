@@ -43,7 +43,7 @@ export interface RecurringSchedule {
 
 export interface RecurringPriceRange {
   tokenSide: 'source' | 'dest';
-  currency: string;
+  currency: 'USD';
   min?: string;
   max?: string;
 }

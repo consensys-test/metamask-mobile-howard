@@ -5,8 +5,6 @@ const createStyles = (_colors: Theme['colors']) =>
   StyleSheet.create({
     feeRowContent: {
       flexDirection: 'row',
-      flexWrap: 'wrap',
-      justifyContent: 'flex-start',
       alignItems: 'center',
       flexShrink: 1,
       gap: 4,
