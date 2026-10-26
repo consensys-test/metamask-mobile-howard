@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [99.99.0]
+
+### Changed
+
+- Updated the empty state on your social profile's Posts tab when it has no posts. (#38128)
+- Updated the linked social account note so the info icon lines up with the first line (#38147)
+- Updated the social post composer so the position card sits closer to the text field (#38130)
+
+### Fixed
+
+- Added support for viewing and trading Gamma Protocol V2 prediction markets, with a kill switch to disable V2 market activity if needed (#38171)
+- Prevented an unstake crash when withdrawal details were unavailable (#38173)
+
+## [99.98.3]
+
+### Added
+
+- Added fixture predecessor entry (#1)
+
 ## [8.17.0]
 
 ### Added
@@ -14611,7 +14630,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#957](https://github.com/MetaMask/metamask-mobile/pull/957): fix timeouts (#957)
 - [#954](https://github.com/MetaMask/metamask-mobile/pull/954): Bugfix: onboarding navigation (#954)
 
-[Unreleased]: https://github.com/MetaMask/metamask-mobile/compare/v8.17.0...HEAD
+[Unreleased]: https://github.com/MetaMask/metamask-mobile/compare/v99.99.0...HEAD
+[99.99.0]: https://github.com/MetaMask/metamask-mobile/compare/v99.98.3...v99.99.0
+[99.98.3]: https://github.com/MetaMask/metamask-mobile/compare/v8.17.0...v99.98.3
 [8.17.0]: https://github.com/MetaMask/metamask-mobile/compare/v8.16.1...v8.17.0
 [8.16.1]: https://github.com/MetaMask/metamask-mobile/compare/v8.16.0...v8.16.1
 [8.16.0]: https://github.com/MetaMask/metamask-mobile/compare/v8.15.1...v8.16.0
