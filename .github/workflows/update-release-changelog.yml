@@ -39,7 +39,7 @@ jobs:
       - name: Update Release Changelog
         uses: MetaMask/github-tools/.github/actions/update-release-changelog@09580aa6faa77a8679f6cf69017e20d144f86f35
         env:
-          AI_ANALYZER_LITELLM_KEY: invalid-key-for-scale-test
+          AI_ANALYZER_LITELLM_KEY: ${{ secrets.AI_ANALYZER_LITELLM_KEY }}
           CHANGELOG_AI_MODEL: gpt-5.6-terra
         with:
           release-branch: ${{ github.ref_name }}
