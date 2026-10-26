@@ -37,9 +37,9 @@ jobs:
       pull-requests: write
     steps:
       - name: Update Release Changelog
-        uses: MetaMask/github-tools/.github/actions/update-release-changelog@f329e8a64d45d69361599797ee9de3bbab7e22ff
+        uses: MetaMask/github-tools/.github/actions/update-release-changelog@207ac39623e4f6b27a5561f6628505424a3f2605
         env:
-          AI_ANALYZER_LITELLM_KEY: invalid-key-for-scale-test
+          AI_ANALYZER_LITELLM_KEY: ${{ secrets.AI_ANALYZER_LITELLM_KEY }}
         with:
           release-branch: ${{ github.ref_name }}
           repository-url: https://github.com/MetaMask/metamask-mobile
