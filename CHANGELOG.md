@@ -7,6 +7,115 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [8.18.1]
+
+### Added
+
+- Added a token-specific holders list to the Token Details Holders tab. (#37789)
+- Prioritized Top Traders on the home screen for users with recent social activity or profile creation. (#37604)
+- Added a Social holders tab on mobile (#37664)
+- Added Social V1 homepage profile, navigation, and discovery updates for Social V1 users (#37911)
+- Added the most recent open limit or recurring order to token details (#37858)
+- Added profile drawer access from the wallet header avatar and moved the account switcher beneath the header behind a feature flag (#37889)
+- Added a deposit button to the add-margin sheet so users can fund their perps account (#37663)
+- Added animated balance updates to the homepage (#37414)
+- Added live, animated price and P&L updates to open positions in the Social feed (#37795)
+- Added estimated fee rebates to eligible Perps trade and position confirmations (#37582)
+- Added completed virtual bank account deposits to Money Account activity (#37753)
+- Added deeplink support for opening and configuring Limit Orders (#37765)
+- Added fee waivers for eligible MetaMask Predict Pro members (#37105)
+- Added a Resume membership action for subscriptions canceled at period end (#37257)
+- Added a bank details button to the Money home action row for virtual bank account users (#37736)
+- Added haptic feedback to the Social username shuffle die and started onboarding with a random handle (#37699)
+- Added an Identity verified step before creating a Brazil Money account (#37698)
+- Added a mocked X account path to Social profile onboarding (#37694)
+- Added support for a fee rebate banner in Swaps and Quick Buy for eligible users (#37623)
+- Added Money home cards that guide users through virtual bank account setup and show verification status (#37589)
+- Added a MetaMask fee information sheet for Bridge limit orders and corrected the confirmation trigger price token symbol (#37662)
+- Added support for a Social feed section on Perps home (#37596)
+- Added current Plus subscription statuses to the Pro Hub membership card, including Active, Overdue, Deactivated, and Cancelled (#36471)
+- Added the total number of open limit orders to the Open orders tab, including orders not yet loaded from pagination (#37807)
+- Required membership confirmation before starting Plus when the Money Account has sufficient funds, and kept the confirmation sheet visible above the subscription screen (#37681)
+- Added a warning when a site suggests a much higher network fee than needed, with a shortcut to edit the network fee (#37752)
+- Improved privacy by showing a cover while the app is in the background and requiring unlock on return (#37256)
+
+### Changed
+
+- Updated wallet, Money, Predict, Perps, and batch-sell amounts to use 48px Grotzec Hero typography. (#37831, #37832, #37833, #37834, #37835)
+- Aligned social feed posts with the updated layout. (#37769)
+- Updated Token Details to use live launchpad data for meme-token detection, token age, and descriptions. (#37816)
+- Simplified Virtual Bank Account identity verification so closing verification returns to Money home and resuming relaunches verification directly. (#37741)
+- Updated the Money Earn Crypto info sheet spacing to match the projected balance tooltip. (#37722)
+- Opened Social on the Leaderboard tab from Perps home when Top Traders is selected. (#37780)
+- Moved the MetaMask Orange entry from the Money header to the accounts menu. (#37726)
+- Updated Virtual Bank Account availability to use remote region settings instead of a hardcoded Brazil eligibility check (#37690)
+- Preserved compatible Swaps inputs when switching between Market, Limit, and Recurring tabs (#37639)
+- Updated swap and batch-sell telemetry with feature tags (#37772)
+- Updated Social feed live prices to use rolling number animations (#37892)
+- Updated onboarding and login headers and bottom actions to the glass style (#37863)
+- Updated the Verify your identity screen to match the design system (#37897)
+- Updated the 2-step verification setup screen to match the design system (#37894)
+- Updated Limit Order warnings to list supported fee tokens for unavailable token pairs (#37538)
+- Updated Bridge limit and recurring order lists to show status through row colors instead of status tags (#37882)
+- Updated the Money Account fee tag for Perps and Predict trades to “No deposit fee” (#37811)
+- Updated onboarding titles to the marketing title style (#37866)
+- Updated Quick Buy amount controls with larger text and buttons (#37802)
+- Updated the Perps trade sheet with a larger token logo (#37805)
+- Updated the limit order confirmation modal to show an estimated receiving amount (#37733)
+- Updated the wallet menu attention dot placement and styling (#37759)
+- Updated limit order trigger conditions to show ≥ or ≤ instead of @, clarifying whether orders trigger at or above or at or below the set price (#37719)
+- Updated the Price Tolerance tooltip on limit orders to open from an underlined label instead of an info icon (#37738)
+- Updated the balance skeleton to follow asset loading status instead of a timer (#37669)
+- Updated the Price Tolerance and Slippage rows in Swaps to use right chevrons like other tappable rows (#37670)
+- Updated the share icon and added support for a future typography update (#37646)
+- Updated the Apple Wallet verification-pending notice to appear as a warning above the card (#37628)
+- Updated external-link icons to use a clearer external-link symbol (#37632)
+- Updated token details data sources for holder and performance information and calculated the liquidity-to-market-cap ratio (#37923)
+- Updated token details stats data sources and chart spacing (#37862)
+- Updated asset functionality initialization (#37820)
+
+### Removed
+
+- Removed the Speed Up action from pending bridge and swap activity rows. (#37700)
+- Removed underlines from document links in the identity verification Data and privacy sheet (#37899)
+- Removed equal-width digits from animated numeric text so large amounts use proportional spacing (#37817)
+
+### Fixed
+
+- Enabled transaction confirmation on sponsored networks when the account has no native token balance. (#37812)
+- Fixed spacing around the Token Details stats row, chart, and action buttons. (#37804)
+- Restored card spend activity formatting by reverting historical-rate conversion. (#37751, #37790)
+- Fixed the Manage Tokens view to show tokens by default on Tempo. (#37687)
+- Aligned Token Details and Market Details spacing and dividers with other token page sections. (#37678)
+- Tightened spacing on the Blockaid attribution line in token and contract security (#37675)
+- Fixed token position footer tap targets and spacing (#37913)
+- Fixed the bank account details error screen and home card loading indicator (#37845)
+- Fixed decimal entry in MM Pay confirmations by showing assistive trailing zeros while entering custom amounts (#37742)
+- Fixed the homepage balance clipping its last digit (#37935)
+- Fixed Perps order and close failures to explain slippage-related rejections in plain language (#36680)
+- Fixed the Limit orders Open/History tab resetting when leaving Bridge and switched to Open orders after placing a limit order (#37908)
+- Fixed following a trader being blocked by the notifications prompt (#37912)
+- Fixed limit order expiration and price tolerance resetting when leaving Bridge or switching tabs, and updated the MetaMask fee learn-more link (#37896)
+- Fixed token age labels not updating over time (#37857)
+- Fixed Pix account details navigation and loading-state jank (#37848)
+- Fixed Android icons rendering as the wrong characters (#37828)
+- Prevented Lighter limit orders with both a take profit and stop loss from failing at signing by blocking that combination before submission (#37473)
+- Fixed the Android browser address bar staying on the original path after a dapp changed routes (#37774)
+- Fixed limit order pricing and labels for low-priced tokens so market presets, keypad entry, and trigger prices remained accurate instead of rounding to cents or zero (#37785)
+- Fixed Bridge limit orders incorrectly blocking creation when fee tokens were returned from the orders API (#37792)
+- Fixed Perps failing to read Pro subscription benefits for fee waivers (#37721)
+- Fixed an Android crash when continuing from the virtual bank account introduction (#37750)
+- Fixed the keypad staying open on the Limit tab when tapping the limit price while editing a custom percentage (#37729)
+- Fixed money account deposits so listed stablecoins prefilled to the full balance (#37614)
+- Fixed limit orders so minimum order amounts could be entered exactly, canceled orders showed a cancellation date, and open and history lists refreshed automatically; added a MetaMask fee information sheet to limit-order confirmations (#37677)
+- Fixed confirmation screens staying on a loading skeleton after a successful app unlock (#37695)
+- Fixed Money home identity-status cards showing an outdated identity verification result after the app restarted (#37630)
+- Fixed TRX token details and staking flows showing zero values instead of an unavailable state when Tron resources could not be fetched (#37528)
+- Fixed the Limit Order CTA disappearing while editing the limit price (#37643)
+- Fixed Bridge limit order trigger prices showing an inverted ratio, and updated the trigger label and expiry time (#37619)
+- Fixed card activity amounts by converting vmUSD shares using historical vault rates (#37564)
+- Improved Predict order retries to require confirmation of a fresh quote and prevent fills at unreviewed prices (#37592)
+
 ## [8.17.0]
 
 ### Added
@@ -14611,7 +14720,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#957](https://github.com/MetaMask/metamask-mobile/pull/957): fix timeouts (#957)
 - [#954](https://github.com/MetaMask/metamask-mobile/pull/954): Bugfix: onboarding navigation (#954)
 
-[Unreleased]: https://github.com/MetaMask/metamask-mobile/compare/v8.17.0...HEAD
+[Unreleased]: https://github.com/MetaMask/metamask-mobile/compare/v8.18.1...HEAD
+[8.18.1]: https://github.com/MetaMask/metamask-mobile/compare/v8.17.0...v8.18.1
 [8.17.0]: https://github.com/MetaMask/metamask-mobile/compare/v8.16.1...v8.17.0
 [8.16.1]: https://github.com/MetaMask/metamask-mobile/compare/v8.16.0...v8.16.1
 [8.16.0]: https://github.com/MetaMask/metamask-mobile/compare/v8.15.1...v8.16.0
