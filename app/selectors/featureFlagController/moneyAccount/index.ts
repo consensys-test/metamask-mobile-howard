@@ -1,6 +1,10 @@
 import { createSelector } from 'reselect';
 import { selectRemoteFeatureFlags } from '..';
-import { validatedVersionGatedFeatureFlag } from '../../../util/remoteFeatureFlag';
+import {
+  isVersionGatedFeatureFlag,
+  validatedVersionGatedFeatureFlag,
+  type VersionGatedFeatureFlag,
+} from '../../../util/remoteFeatureFlag';
 import type { Hex } from '@metamask/utils';
 
 interface MoneyAccountFeatureFlag {
@@ -26,22 +30,182 @@ export const selectMoneyAccountWithdrawEnabledFlag = createSelector(
   },
 );
 
-export const MONEY_MOVEMENT_BRAZIL_NEOBANK_FLAG_KEY =
-  'moneyMovementBrazilNeobank' as const;
+/**
+ * LaunchDarkly key: `money-movement-neobank`.
+ * Client Config camelCases kebab-case keys before the app reads them, same as
+ * `tokenDetailsTechnicalIndicators`. This is the key in `remoteFeatureFlags`.
+ */
+export const MONEY_MOVEMENT_NEOBANK_FLAG_KEY = 'moneyMovementNeobank' as const;
 
-export const selectMoneyMovementBrazilNeobankEnabled = createSelector(
+interface MoneyMovementNeobankFlag extends VersionGatedFeatureFlag {
+  regions?: unknown;
+  regionCurrencies?: unknown;
+  regionOverride?: unknown;
+}
+
+/**
+ * `validatedVersionGatedFeatureFlag` unwraps `{ name, value }` and then
+ * returns only a boolean, which drops `regions`, `regionCurrencies`, and
+ * `regionOverride`. Recover the same payload here so those fields can be
+ * read after the enabled + minimumVersion gate.
+ *
+ * @param remoteFlag - Raw `moneyMovementNeobank` value from RemoteFeatureFlagController.
+ * @returns The version-gated object, including any extra fields, or undefined.
+ */
+function readMoneyMovementNeobankFlag(
+  remoteFlag: unknown,
+): MoneyMovementNeobankFlag | undefined {
+  if (isVersionGatedFeatureFlag(remoteFlag)) {
+    return remoteFlag;
+  }
+
+  if (
+    typeof remoteFlag === 'object' &&
+    remoteFlag !== null &&
+    'value' in remoteFlag
+  ) {
+    const wrappedValue = (remoteFlag as { value?: unknown }).value;
+    if (isVersionGatedFeatureFlag(wrappedValue)) {
+      return wrappedValue;
+    }
+  }
+
+  return undefined;
+}
+
+/**
+ * Uppercase, trim, and dedupe country codes. Non-strings and blanks are dropped.
+ * An empty result means no region is allowed.
+ *
+ * @param regions - Raw `regions` field from the flag payload.
+ * @returns ISO 3166-1 alpha-2 codes safe to compare with a geolocation country.
+ */
+function normalizeVbaRegionCodes(regions: unknown): string[] {
+  if (!Array.isArray(regions)) {
+    return [];
+  }
+
+  const seen = new Set<string>();
+  const codes: string[] = [];
+  for (const region of regions) {
+    if (typeof region !== 'string') {
+      continue;
+    }
+    const code = region.trim().toUpperCase();
+    if (!code || seen.has(code)) {
+      continue;
+    }
+    seen.add(code);
+    codes.push(code);
+  }
+  return codes;
+}
+
+const VBA_SOURCE_CURRENCIES = new Set(['BRL', 'USD', 'EUR']);
+
+function normalizeVbaRegionCurrencies(
+  regionCurrencies: unknown,
+): Readonly<Record<string, 'BRL' | 'USD' | 'EUR'>> {
+  if (
+    typeof regionCurrencies !== 'object' ||
+    regionCurrencies === null ||
+    Array.isArray(regionCurrencies)
+  ) {
+    return {};
+  }
+
+  const normalized: Record<string, 'BRL' | 'USD' | 'EUR'> = {};
+  for (const [region, currency] of Object.entries(regionCurrencies)) {
+    const code = region.trim().toUpperCase();
+    const fiat =
+      typeof currency === 'string' ? currency.trim().toUpperCase() : '';
+    if (code && VBA_SOURCE_CURRENCIES.has(fiat)) {
+      normalized[code] = fiat as 'BRL' | 'USD' | 'EUR';
+    }
+  }
+  return normalized;
+}
+
+/**
+ * Trim and uppercase a country code from `regionOverride`. A missing,
+ * non-string, or blank value is no override. Any non-blank string is kept.
+ * This is a country code, not a currency.
+ *
+ * @param regionOverride - Raw `regionOverride` field from the flag payload.
+ * @returns An uppercase country code, or undefined when there is no override.
+ */
+function normalizeVbaRegionOverride(
+  regionOverride: unknown,
+): string | undefined {
+  if (typeof regionOverride !== 'string') {
+    return undefined;
+  }
+  const code = regionOverride.trim().toUpperCase();
+  return code || undefined;
+}
+
+export interface MoneyMovementNeobankRollout {
+  /**
+   * Whether this binary may offer Virtual Bank Accounts. False when the flag
+   * is missing, disabled, malformed, older than `minimumVersion`, or `regions`
+   * has no country codes.
+   */
+  isEnabled: boolean;
+  /** Uppercase ISO 3166-1 alpha-2 codes. Empty whenever `isEnabled` is false. */
+  regions: readonly string[];
+  /** Currency served for each country. Missing countries fail closed. */
+  regionCurrencies: Readonly<Record<string, 'BRL' | 'USD' | 'EUR'>>;
+  /**
+   * Country code used ahead of the IP location. Undefined when the field is
+   * missing, not a string, blank, or the gate is closed. The country must
+   * still be listed in `regions`.
+   */
+  regionOverride: string | undefined;
+}
+
+const NEOBANK_ROLLOUT_DISABLED: MoneyMovementNeobankRollout = {
+  isEnabled: false,
+  regions: [],
+  regionCurrencies: {},
+  regionOverride: undefined,
+};
+
+/**
+ * Virtual Bank Account rollout from `moneyMovementNeobank`.
+ *
+ * The object is the only switch: `{ enabled, minimumVersion, regions,
+ * regionCurrencies, regionOverride }`. A closed gate allows no country and
+ * returns no region override. `regionOverride` is optional and absent in
+ * production; an RC or internal variation can set a country code.
+ *
+ * @returns The enabled country list, or a disabled rollout.
+ */
+export const selectMoneyMovementNeobank = createSelector(
   selectRemoteFeatureFlags,
-  (remoteFeatureFlags): boolean => {
-    const remoteFlag =
-      remoteFeatureFlags?.[MONEY_MOVEMENT_BRAZIL_NEOBANK_FLAG_KEY];
-    return validatedVersionGatedFeatureFlag(remoteFlag) ?? false;
+  (remoteFeatureFlags): MoneyMovementNeobankRollout => {
+    const remoteFlag = remoteFeatureFlags?.[MONEY_MOVEMENT_NEOBANK_FLAG_KEY];
+    const payload = readMoneyMovementNeobankFlag(remoteFlag);
+    if (!payload || validatedVersionGatedFeatureFlag(payload) !== true) {
+      return NEOBANK_ROLLOUT_DISABLED;
+    }
+    const regions = normalizeVbaRegionCodes(payload.regions);
+    if (regions.length === 0) {
+      return NEOBANK_ROLLOUT_DISABLED;
+    }
+    return {
+      isEnabled: true,
+      regions,
+      regionCurrencies: normalizeVbaRegionCurrencies(payload.regionCurrencies),
+      regionOverride: normalizeVbaRegionOverride(payload.regionOverride),
+    };
   },
 );
 
 /**
  * Local escape hatch so engineers can open the live Bank account row from an
- * unsupported IP. The `moneyMovementBrazilNeobank` flag must still be on.
- * Set `MM_MONEY_VBA_GEO_BYPASS=true` in `.js.env` and restart Metro.
+ * IP outside `moneyMovementNeobank.regions`. The flag must still be enabled with
+ * a non-empty region list. Set `MM_MONEY_VBA_GEO_BYPASS=true` in `.js.env`
+ * and restart Metro.
  *
  * @returns Whether the VBA geolocation requirement is bypassed.
  */
