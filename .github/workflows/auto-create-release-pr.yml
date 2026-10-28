@@ -49,6 +49,7 @@ jobs:
     uses: ./.github/workflows/create-release-pr.yml
     secrets:
       google-application-creds-base64: ${{ secrets.GCP_RLS_SHEET_ACCOUNT_BASE64 }}
+      PR_TOKEN: ${{ secrets.PR_TOKEN }}
     with:
       semver-version: ${{ needs.extract.outputs.semver }}
       is-ota: ${{ needs.extract.outputs.is_ota == 'true' }}
