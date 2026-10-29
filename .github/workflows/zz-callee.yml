@@ -1,9 +1,0 @@
-name: zz-callee
-on:
-  workflow_dispatch:
-  workflow_call:
-jobs:
-  hello:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo callee-ran
