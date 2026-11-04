@@ -8,10 +8,7 @@ import PerpsServiceInterruptionBanner, {
   SERVICE_INTERRUPTION_LINK_PLACEHOLDERS,
 } from './PerpsServiceInterruptionBanner';
 import { selectPerpsServiceInterruptionBannerEnabledFlag } from '../../selectors/featureFlags';
-import {
-  METAMASK_SUPPORT_URL,
-  PERPS_TROUBLESHOOT_URL,
-} from '../../../../../constants/urls';
+import { METAMASK_SUPPORT_URL } from '../../../../../constants/urls';
 import {
   SERVICE_INTERRUPTION_CONFIG,
   SUPPORT_CONFIG,
@@ -116,16 +113,15 @@ describe('PerpsServiceInterruptionBanner', () => {
     }
   });
 
-  it('opens the Perps troubleshoot article in the SimpleWebview when the FAQ link is pressed', () => {
+  it('opens the Perps FAQ in the SimpleWebview when the FAQ link is pressed', () => {
     const { getByTestId } = render(<PerpsServiceInterruptionBanner />);
 
     fireEvent.press(getByTestId(`${TEST_ID}-faq-link`));
 
-    expect(SERVICE_INTERRUPTION_CONFIG.FaqUrl).toBe(PERPS_TROUBLESHOOT_URL);
     expect(mockNavigate).toHaveBeenCalledWith('Webview', {
       screen: 'SimpleWebview',
       params: {
-        url: PERPS_TROUBLESHOOT_URL,
+        url: SERVICE_INTERRUPTION_CONFIG.FaqUrl,
         title: strings(SERVICE_INTERRUPTION_CONFIG.FaqTitleKey),
       },
     });
