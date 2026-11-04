@@ -57,7 +57,7 @@ jobs:
       # The action checks out the release branch itself and derives the changelog version from
       # the branch name (release/X.Y.Z or release/X.Y.Z-ota → X.Y.Z).
       - name: Update Release Changelog
-        uses: MetaMask/github-tools/.github/actions/update-release-changelog@88836cf1473f73a64848a809cf89e616ed6ed692
+        uses: MetaMask/github-tools/.github/actions/update-release-changelog@e5de46563ff30e4985fb7a99ad3da6ab66ed176f
         env:
           AI_ANALYZER_LITELLM_KEY: ${{ secrets.AI_ANALYZER_LITELLM_KEY }}
         with:
