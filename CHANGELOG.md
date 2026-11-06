@@ -7,13 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [67.0.0]
+
+### Added
+
+- Added the fixture baseline entry (#38700)
+
 ## [8.17.0]
 
 ### Added
 
-- Added token-specific Social feeds and position sharing from token details when Social is available (#37516)
-- Added support for showing Robinhood tokenized stocks in Explore when enabled (#37453)
-- Added a Perps home Explore section for A/B test treatment groups (#37454)
 - Added email verification by one-time passcode to virtual bank account onboarding (#37541)
 - Added sharing of open positions from the token details footer (#37622)
 - Added percent-change price alerts for perpetual markets (#37532)
@@ -14611,7 +14614,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#957](https://github.com/MetaMask/metamask-mobile/pull/957): fix timeouts (#957)
 - [#954](https://github.com/MetaMask/metamask-mobile/pull/954): Bugfix: onboarding navigation (#954)
 
-[Unreleased]: https://github.com/MetaMask/metamask-mobile/compare/v8.17.0...HEAD
+[Unreleased]: https://github.com/MetaMask/metamask-mobile/compare/v67.0.0...HEAD
+[67.0.0]: https://github.com/MetaMask/metamask-mobile/compare/v8.17.0...v67.0.0
 [8.17.0]: https://github.com/MetaMask/metamask-mobile/compare/v8.16.1...v8.17.0
 [8.16.1]: https://github.com/MetaMask/metamask-mobile/compare/v8.16.0...v8.16.1
 [8.16.0]: https://github.com/MetaMask/metamask-mobile/compare/v8.15.1...v8.16.0
