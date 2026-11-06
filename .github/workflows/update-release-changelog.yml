@@ -68,3 +68,4 @@ jobs:
           repository-url: https://github.com/MetaMask/metamask-mobile
           platform: mobile
           github-token: ${{ secrets.PR_TOKEN }}
+          checkout-filter: tree:0
