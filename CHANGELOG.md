@@ -7,12 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [87.0.0]
-
-### Added
-
-- Added the fixture baseline entry (#38700)
-
 ## [8.17.0]
 
 ### Added
@@ -14617,8 +14611,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#957](https://github.com/MetaMask/metamask-mobile/pull/957): fix timeouts (#957)
 - [#954](https://github.com/MetaMask/metamask-mobile/pull/954): Bugfix: onboarding navigation (#954)
 
-[Unreleased]: https://github.com/MetaMask/metamask-mobile/compare/v87.0.0...HEAD
-[87.0.0]: https://github.com/MetaMask/metamask-mobile/compare/v8.17.0...v87.0.0
+[Unreleased]: https://github.com/MetaMask/metamask-mobile/compare/v8.17.0...HEAD
 [8.17.0]: https://github.com/MetaMask/metamask-mobile/compare/v8.16.1...v8.17.0
 [8.16.1]: https://github.com/MetaMask/metamask-mobile/compare/v8.16.0...v8.16.1
 [8.16.0]: https://github.com/MetaMask/metamask-mobile/compare/v8.15.1...v8.16.0
