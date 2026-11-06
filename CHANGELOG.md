@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Added token-specific Social feeds and position sharing from token details when Social is available (#37516)
+- Added support for showing Robinhood tokenized stocks in Explore when enabled (#37453)
+- Added a Perps home Explore section for A/B test treatment groups (#37454)
 - Added email verification by one-time passcode to virtual bank account onboarding (#37541)
 - Added sharing of open positions from the token details footer (#37622)
 - Added percent-change price alerts for perpetual markets (#37532)
