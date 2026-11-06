@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added the fixture baseline entry (#38700)
 
+### Fixed
+
+- Fixed watchlist rows overlapping the Explore pills (#38923)
+
 ## [8.17.0]
 
 ### Added
