@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [86.1.0]
+
+### Fixed
+
+- Fixed Add to Wallet appearing for Baanx cardholders outside the US (#38879)
+
+## [86.0.0]
+
+### Added
+
+- Added the fixture baseline entry (#38700)
+
 ## [8.17.0]
 
 ### Added
@@ -14611,7 +14623,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#957](https://github.com/MetaMask/metamask-mobile/pull/957): fix timeouts (#957)
 - [#954](https://github.com/MetaMask/metamask-mobile/pull/954): Bugfix: onboarding navigation (#954)
 
-[Unreleased]: https://github.com/MetaMask/metamask-mobile/compare/v8.17.0...HEAD
+[Unreleased]: https://github.com/MetaMask/metamask-mobile/compare/v86.1.0...HEAD
+[86.1.0]: https://github.com/MetaMask/metamask-mobile/compare/v86.0.0...v86.1.0
+[86.0.0]: https://github.com/MetaMask/metamask-mobile/compare/v8.17.0...v86.0.0
 [8.17.0]: https://github.com/MetaMask/metamask-mobile/compare/v8.16.1...v8.17.0
 [8.16.1]: https://github.com/MetaMask/metamask-mobile/compare/v8.16.0...v8.16.1
 [8.16.0]: https://github.com/MetaMask/metamask-mobile/compare/v8.15.1...v8.16.0
