@@ -57,30 +57,14 @@ jobs:
       pull-requests: write
       id-token: write
     steps:
-      # Mint a short-lived token via the token-exchange service (OIDC). It needs:
-      # - contents: write       → push the changelog branch
-      # - pull_requests: write  → open/update the changelog PR
-      # - workflows: write      → workaround for a GitHub push-protection timeout bug on new
-      #                           branch pushes (see actions/checkout#2287); this step never
-      #                           actually touches workflow files.
-      - name: Get token
-        id: get-token
-        uses: MetaMask/github-tools/.github/actions/get-token@v1
-        with:
-          token-exchange-url: ${{ vars.TOKEN_EXCHANGE_URL }}
-          permissions: |
-            contents: write
-            pull_requests: write
-            workflows: write
-
       # The action checks out the release branch itself and derives the changelog version from
       # the branch name (release/X.Y.Z or release/X.Y.Z-ota → X.Y.Z).
       - name: Update Release Changelog
-        uses: MetaMask/github-tools/.github/actions/update-release-changelog@v1
+        uses: MetaMask/github-tools/.github/actions/update-release-changelog@03acefc2e78cc2c6f1ad437a206b1ca7eeff2729
         env:
           AI_ANALYZER_LITELLM_KEY: ${{ secrets.AI_ANALYZER_LITELLM_KEY }}
         with:
           release-branch: ${{ github.ref_name }}
-          repository-url: ${{ github.server_url }}/${{ github.repository }}
+          repository-url: https://github.com/MetaMask/metamask-mobile
           platform: mobile
-          github-token: ${{ steps.get-token.outputs.token }}
+          github-token: ${{ secrets.PR_TOKEN }}
