@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [8.99.1]
+
+### Fixed
+
+- Hid Add to Wallet for Baanx cards outside the US (8.18) (#38879)
+
 ## [8.99.0]
 
 ### Fixed
@@ -14617,7 +14623,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#957](https://github.com/MetaMask/metamask-mobile/pull/957): fix timeouts (#957)
 - [#954](https://github.com/MetaMask/metamask-mobile/pull/954): Bugfix: onboarding navigation (#954)
 
-[Unreleased]: https://github.com/MetaMask/metamask-mobile/compare/v8.17.0...HEAD
+[Unreleased]: https://github.com/MetaMask/metamask-mobile/compare/v8.99.1...HEAD
+[8.99.1]: https://github.com/MetaMask/metamask-mobile/compare/v8.99.0...v8.99.1
+[8.99.0]: https://github.com/MetaMask/metamask-mobile/compare/v8.17.0...v8.99.0
 [8.17.0]: https://github.com/MetaMask/metamask-mobile/compare/v8.16.1...v8.17.0
 [8.16.1]: https://github.com/MetaMask/metamask-mobile/compare/v8.16.0...v8.16.1
 [8.16.0]: https://github.com/MetaMask/metamask-mobile/compare/v8.15.1...v8.16.0
