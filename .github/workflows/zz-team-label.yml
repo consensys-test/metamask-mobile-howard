@@ -1,0 +1,33 @@
+name: zz test team label
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [reopened]
+jobs:
+  create-pr:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Open a PR as github-actions[bot]
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: gh pr create --base main --head zz-bot-pr --title 'zz bot authored PR' --body 'fork test'
+  label:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Show author
+        env:
+          LOGIN: ${{ github.event.pull_request.user.login }}
+          TYPE: ${{ github.event.pull_request.user.type }}
+        run: echo "author=$LOGIN type=$TYPE"
+      - uses: MetaMask/github-tools/.github/actions/add-team-label@add-team-label-bot-fallback
+        with:
+          team-label-token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,14 @@
+name: zz test merge previous
+on:
+  workflow_dispatch:
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
+    steps:
+      - uses: MetaMask/github-tools/.github/actions/merge-previous-releases@merge-previous-update-unreleased-link
+        with:
+          new-release-branch: release/8.1.1
+          github-token: ${{ secrets.GITHUB_TOKEN }}
